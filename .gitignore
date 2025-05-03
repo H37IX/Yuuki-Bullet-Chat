@@ -47,5 +47,5 @@ coverage/
 
 # Media and archives
 *.mp4
-!H37-Bullet-Chat-Example.mp4
 *.zip
+!demo.gif

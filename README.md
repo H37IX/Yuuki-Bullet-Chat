@@ -4,7 +4,7 @@ A collaboration with Yukki to build a customizable bullet chat widget for Stream
 
 ## Example
 
-https://github.com/H37IX/Yuuki-Bullet-Chat/blob/main/H37-Bullet-Chat-Example.mp4
+![Demo of the Bullet Chat Widget](demo.gif)
 
 ## Features
 
