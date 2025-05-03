@@ -44,3 +44,8 @@ coverage/
 # Misc
 .cache/
 .temp/
+
+# Media and archives
+*.mp4
+!H37-Bullet-Chat-Example.mp4
+*.zip
