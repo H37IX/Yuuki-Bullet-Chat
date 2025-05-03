@@ -1,0 +1,72 @@
+{
+  "direction": {
+    "type": "dropdown",
+    "label": "Message Direction",
+    "value": "both",
+    "options": {
+      "left": "Left → Right",
+      "right": "Right → Left",
+      "both": "Both (Random)"
+    }
+  },
+  "speed": {
+    "type": "slider",
+    "label": "Speed (pixels/frame)",
+    "min": 1,
+    "max": 50,
+    "step": 1,
+    "default": 10
+  },
+  "duration": {
+    "type": "slider",
+    "label": "Duration (ms)",
+    "min": 1000,
+    "max": 10000,
+    "step": 100,
+    "default": 5000
+  },
+  "fade": {
+    "type": "checkbox",
+    "label": "Enable Fade Out",
+    "default": true
+  },
+  "fadeTime": {
+    "type": "slider",
+    "label": "Fade Time (ms)",
+    "min": 100,
+    "max": 5000,
+    "step": 100,
+    "default": 1000
+  },
+  "fontFamily": {
+    "type": "googleFont",
+    "label": "Message Font",
+    "value": "Roboto"
+  },
+  "fontSize": {
+    "type": "number",
+    "label": "Font Size (px)",
+    "min": 10,
+    "max": 100,
+    "step": 1,
+    "value": 37
+  },
+  "usernameColor": {
+    "type": "colorpicker",
+    "label": "Username Color",
+    "default": "#00ffff",
+    "alpha": true
+  },
+  "textColor": {
+    "type": "colorpicker",
+    "label": "Chat Text Color",
+    "default": "#ffffff",
+    "alpha": true
+  },
+  "bgColor": {
+    "type": "colorpicker",
+    "label": "Background Color",
+    "default": "rgba(0,0,0,0)",
+    "alpha": true
+  }
+}
