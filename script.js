@@ -1,3 +1,4 @@
+//🧬
 // Widget Settings
 const fieldData = {
     fontFamily: 'Roboto',
@@ -13,12 +14,35 @@ const fieldData = {
     direction: 'both'
   };
   
-  // Track active messages for vertical spacing
-  const activeMessages = new Set();
-  const MIN_SPACING = 50; // Minimum pixel spacing between messages
+// Twitch default color palette (used if no color is set or found)
+const TWITCH_COLORS = [
+    "#FF0000", "#0000FF", "#008000", "#B22222", "#FF7F50", 
+    "#9ACD32", "#FF4500", "#2E8B57", "#DAA520", "#D2691E", 
+    "#5F9EA0", "#1E90FF", "#FF69B4", "#8A2BE2", "#00FF7F"
+];
+
+// Get a deterministic color based on username if no color is set
+function getTwitchFallbackColor(username) {
+    if (!username) return TWITCH_COLORS[0];
+    
+    // Create a simple hash from username
+    let hash = 0;
+    for (let i = 0; i < username.length; i++) {
+        hash = (hash << 5) - hash + username.charCodeAt(i);
+        hash |= 0; // Convert to 32bit integer
+    }
+    
+    // Get a color from the Twitch palette using the hash
+    const index = Math.abs(hash) % TWITCH_COLORS.length;
+    return TWITCH_COLORS[index];
+}
   
-  // Find an available vertical position for a new message
-  function findAvailablePosition(messageHeight) {
+// Track active messages for vertical spacing
+const activeMessages = new Set();
+const MIN_SPACING = 50; // Minimum pixel spacing between messages
+  
+// Find an available vertical position for a new message
+function findAvailablePosition(messageHeight) {
     // Get all current message positions
     const positions = Array.from(activeMessages).map(msg => {
         const rect = msg.getBoundingClientRect();
@@ -49,36 +73,48 @@ const fieldData = {
     
     // If no good space found, return random position
     return Math.floor(Math.random() * (containerHeight - messageHeight - 20));
-  }
+}
   
-  // Random dir helper
-  function randomDirection() {
+// Random dir helper
+function randomDirection() {
     return Math.random() > 0.5 ? 'left' : 'right';
-  }
+}
   
-  // Listen for incoming chat messages
-  window.addEventListener('onEventReceived', function (obj) {
+// Listen for incoming chat messages
+window.addEventListener('onEventReceived', function (obj) {
     // Check if it's a chat message event
     if (obj.detail.listener === 'message') {
-        const data = obj.detail.event.data;
-        console.log('Full message event data:', JSON.stringify(obj.detail.event));
-        console.log('Message data properties:', Object.keys(data));
+        console.log('Full message event received:', obj.detail);
+        
+        // Extract message data from different possible structures
+        const event = obj.detail.event;
+        const data = event.data || {};
+        
+        // Log all possible paths where color might be found
+        console.log('Color debug info:');
+        console.log('- fieldData.useTwitchColors:', fieldData.useTwitchColors);
+        console.log('- data.color:', data.color);
+        console.log('- event.data?.color:', event.data?.color);
+        console.log('- data.userData?.color:', data.userData?.color);
+        console.log('- event.userData?.color:', event.userData?.color);
+        console.log('- data.tags?.color:', data.tags?.color);
         
         if (!data || !data.displayName) {
             console.log('Invalid message data:', obj.detail);
             return;
         }
-        spawnMessage(obj.detail.event);
+        spawnMessage(event);
     }
-  });
+});
   
-  // Spawn messages from somewhere on the screen
-  function spawnMessage(event) {
+// Spawn messages from somewhere on the screen
+function spawnMessage(event) {
     const data = event.data || {};
+    
+    // Detailed debug logging
+    console.log('Full event object:', event);
     console.log('Processing message from:', data.displayName);
-    console.log('Raw message:', data.text);
-    console.log('Has emotes property:', !!data.emotes);
-    console.log('Has html property:', !!data.html);
+    console.log('Message data:', data);
     
     const container = document.getElementById('chat-container');
     const msg = document.createElement('div');
@@ -92,10 +128,38 @@ const fieldData = {
     const usernameSpan = document.createElement('span');
     usernameSpan.className = 'username';
     
-    // Use Twitch colors if enabled, otherwise use the custom color
-    if (fieldData.useTwitchColors && data.color) {
-        console.log('Using Twitch username color:', data.color);
-        usernameSpan.style.color = data.color;
+    // Get Twitch color from various possible locations in the data structure
+    let twitchColor = null;
+    
+    // Try different possible locations for the color property
+    if (fieldData.useTwitchColors) {
+        // Check all possible places where color might be stored
+        if (data.color) {
+            twitchColor = data.color;
+            console.log('Found color in data.color:', twitchColor);
+        } else if (event.data && event.data.color) {
+            twitchColor = event.data.color;
+            console.log('Found color in event.data.color:', twitchColor);
+        } else if (data.userData && data.userData.color) {
+            twitchColor = data.userData.color;
+            console.log('Found color in data.userData.color:', twitchColor);
+        } else if (event.userData && event.userData.color) {
+            twitchColor = event.userData.color;
+            console.log('Found color in event.userData.color:', twitchColor);
+        } else if (data.tags && data.tags.color) {
+            twitchColor = data.tags.color;
+            console.log('Found color in data.tags.color:', twitchColor);
+        } else {
+            // If no color is found but we want Twitch colors, use the fallback
+            twitchColor = getTwitchFallbackColor(data.displayName);
+            console.log('No Twitch color found, using fallback color:', twitchColor);
+        }
+    }
+    
+    // Use Twitch colors if enabled and available, otherwise use the custom color
+    if (fieldData.useTwitchColors && twitchColor) {
+        console.log('Using Twitch username color:', twitchColor);
+        usernameSpan.style.color = twitchColor;
     } else {
         console.log('Using custom username color:', fieldData.usernameColor);
         usernameSpan.style.color = fieldData.usernameColor;
@@ -121,7 +185,7 @@ const fieldData = {
     // Approach 3: Try to use emotes data to reconstruct message
     else if (data.emotes && data.text) {
       console.log('Manually processing emotes');
-      // This is a simplified version - may need to be expanded
+      // simplified version 
       let html = data.text;
       const emotes = data.emotes;
       
@@ -139,7 +203,7 @@ const fieldData = {
       // Sort by start position descending (process right to left)
       emoteArray.sort((a, b) => b.start - a.start);
       
-      // Replace emotes with images
+      // Replace emotes with images from 7TV
       for (const emote of emoteArray) {
         const { id, start, end } = emote;
         const emoteCode = data.text.substring(start, end + 1);
@@ -255,7 +319,7 @@ const fieldData = {
     link.href = `https://fonts.googleapis.com/css?family=${encodeURIComponent(fontFamily)}`;
     document.head.appendChild(link);
   }
-  // Animate messages across the screen from left to right or right to left or both
+  // Animate/Scroll messages across the screen from left to right or right to left or both
   function animateMessage(msg) {
     const spawnFrom = msg.dataset.spawnFrom;
     const containerWidth = document.getElementById('chat-container').clientWidth;
@@ -324,6 +388,7 @@ const fieldData = {
     fieldData.direction = d.direction || 'both';
     
     console.log('Widget loaded with settings:', fieldData);
+    console.log('useTwitchColors setting:', fieldData.useTwitchColors);
     
     // Load Google Font
     addGoogleFontLink(fieldData.fontFamily);
@@ -341,7 +406,7 @@ const fieldData = {
         }
     }
     
-    // User message deletion (ban/timeout)
+    // User message deletion (handles ban/timeout)
     if (obj.detail.listener === 'delete-messages') {
         const userId = obj.detail.event.userId;
         document.querySelectorAll(`.chat-message[data-user-id="${userId}"]`).forEach(msgEl => {

@@ -54,7 +54,7 @@
   "useTwitchColors": {
     "type": "checkbox",
     "label": "Use Twitch Username Colors",
-    "value": true
+    "default": true
   },
   "usernameColor": {
     "type": "colorpicker",
