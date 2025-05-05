@@ -1,6 +1,6 @@
-# StreamElements Bullet Chat Widget by H37iX & Yuuki
+# StreamElements Bullet Chat Widget by H37iX & [Yuuki](https://yuukitrap.carrd.co/)
 
-A collaboration with Yukki to build a customizable bullet chat widget for StreamElements. This widget displays chat messages scrolling across the screen with various animation and styling options. Created after Yukki noted the lack of a fully functional StreamElements overlay for bullet-style chat. We were unable to quickly find a free/shared version of the code needed to make this work so we are posting it here for others who may want to use it. 
+A collaboration with [Yuuki](https://yuukitrap.carrd.co/) to build a customizable bullet chat widget for use as a StreamElements Custom Overlay. This widget displays chat messages scrolling across the screen with various animation and styling options. Created after Yuuki noted the lack of a fully functional StreamElements overlays for bullet-style chat. We were unable to quickly find a free/shared version of the code needed to make this work so we are posting it here for others who may want to use it. 
 
 ## Example
 
