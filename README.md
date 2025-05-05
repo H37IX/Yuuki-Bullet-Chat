@@ -61,6 +61,7 @@ A collaboration with Yukki to build a customizable bullet chat widget for Stream
 - **Message Font**: Choose from hundreds of Google Fonts
 - **Font Size**: Set the text size (10-100 pixels)
 - **Username Color**: Custom color for usernames with opacity control
+  - Option to use Twitch's native username colors instead of custom colors
 - **Chat Text Color**: Custom color for message text with opacity control
 - **Background Color**: Custom color for message background with opacity control
 
