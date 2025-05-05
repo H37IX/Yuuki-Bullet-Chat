@@ -6,6 +6,7 @@ const fieldData = {
     duration: 5000,
     fade: true,
     fadeTime: 1000,
+    useTwitchColors: true,
     usernameColor: '#00ffff',
     textColor: '#ffffff',
     bgColor: 'transparent',
@@ -90,7 +91,16 @@ const fieldData = {
     // Create username span
     const usernameSpan = document.createElement('span');
     usernameSpan.className = 'username';
-    usernameSpan.style.color = fieldData.usernameColor;
+    
+    // Use Twitch colors if enabled, otherwise use the custom color
+    if (fieldData.useTwitchColors && data.color) {
+        console.log('Using Twitch username color:', data.color);
+        usernameSpan.style.color = data.color;
+    } else {
+        console.log('Using custom username color:', fieldData.usernameColor);
+        usernameSpan.style.color = fieldData.usernameColor;
+    }
+    
     usernameSpan.textContent = `${data.displayName}: `;
     
     // Create message span 
@@ -307,6 +317,7 @@ const fieldData = {
     fieldData.duration = Number(d.duration || 5000);
     fieldData.fade = d.fade === 'on' || d.fade === true;
     fieldData.fadeTime = Number(d.fadeTime || 1000);
+    fieldData.useTwitchColors = d.useTwitchColors === 'on' || d.useTwitchColors === true;
     fieldData.usernameColor = d.usernameColor || '#00ffff';
     fieldData.textColor = d.textColor || '#ffffff';
     fieldData.bgColor = d.bgColor || 'transparent';
