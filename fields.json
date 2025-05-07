@@ -1,4 +1,10 @@
 {
+  "showPreview": {
+    "type": "checkbox",
+    "label": "Show Style Preview",
+    "default": true,
+    "tooltip": "Enable to show a preview message with your current style settings (only visible in editor)"
+  },
   "direction": {
     "type": "dropdown",
     "label": "Message Direction",

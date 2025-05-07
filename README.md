@@ -21,6 +21,11 @@ A collaboration with [Yuuki](https://yuukitrap.carrd.co/) to build a customizabl
   - Username Color: Custom color for usernames (with opacity control)
   - Message Color: Custom color for message text (with opacity control)
   - Background Color: Optional message background with customizable color and opacity
+- **Preview Feature**:
+  - Simple checkbox option to enable/disable the style preview
+  - Creates a sample message showing how your settings will look
+  - Preview is clearly labeled with "[PREVIEW]" text
+  - Only visible in the editor (not seen by viewers) unless you hit SAVE while checkbox enabled
 
 ## Installation
 
